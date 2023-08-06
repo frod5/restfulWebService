@@ -3,6 +3,7 @@ package com.example.restfulwebservice.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -23,7 +24,13 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public User retrieveUser(@PathVariable Long id) {
-        return userRepository.findOne(id);
+        User user = userRepository.findOne(id);
+
+        if(ObjectUtils.isEmpty(user)) {
+            throw new UserNotFoundException(String.format("ID[%s]",id));
+        }
+
+        return user;
     }
 
     @PostMapping("/users")
