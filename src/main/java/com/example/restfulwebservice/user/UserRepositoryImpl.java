@@ -5,6 +5,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Repository
@@ -41,5 +42,21 @@ public class UserRepositoryImpl implements UserRepository {
                 .filter(user -> user.getId().equals(id))
                 .findAny()
                 .orElse(null);
+    }
+
+    @Override
+    public User deleteById(Long id) {
+        Iterator<User> iterator = users.iterator();
+
+        while(iterator.hasNext()) {
+            User user = iterator.next();
+
+            if(user.getId().equals(id)) {
+                iterator.remove();
+                return user;
+            }
+        }
+
+        return null;
     }
 }

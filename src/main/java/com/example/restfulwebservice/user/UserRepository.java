@@ -8,4 +8,6 @@ public interface UserRepository {
     List<User> findAll();
 
     User findOne(Long id);
+
+    User deleteById(Long id);
 }

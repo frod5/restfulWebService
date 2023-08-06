@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -27,7 +26,7 @@ public class UserController {
         User user = userRepository.findOne(id);
 
         if(ObjectUtils.isEmpty(user)) {
-            throw new UserNotFoundException(String.format("ID[%s]",id));
+            throw new UserNotFoundException(String.format("ID[%s] not found",id));
         }
 
         return user;
@@ -43,5 +42,14 @@ public class UserController {
                 .toUri();
 
         return ResponseEntity.created(loacation).build();
+    }
+
+    @DeleteMapping("/users/{id}")
+    public void deleteUser(@PathVariable Long id) {
+        User user = userRepository.deleteById(id);
+
+        if(ObjectUtils.isEmpty(user)) {
+            throw new UserNotFoundException(String.format("ID[%s] not found",id));
+        }
     }
 }
