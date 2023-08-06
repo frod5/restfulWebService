@@ -2,8 +2,11 @@ package com.example.restfulwebservice.user;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -24,8 +27,14 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public Long createUser(@RequestBody User user) {
-        user.setJoinDate(LocalDateTime.now());
-        return userRepository.save(user);
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        Long savedId = userRepository.save(user);
+
+        URI loacation = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(savedId)
+                .toUri();
+
+        return ResponseEntity.created(loacation).build();
     }
 }
