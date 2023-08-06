@@ -24,15 +24,13 @@ public class SwaggerConfig {
 
     @Bean
     public Docket api() {
-        /*return new Docket(DocumentationType.SWAGGER_2)
+        return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo())
                 .produces(DEFAULT_PRODUCES_AND_CONSUMES)
-                .consumes(DEFAULT_PRODUCES_AND_CONSUMES);*/
-        return new Docket(DocumentationType.SWAGGER_2);
+                .consumes(DEFAULT_PRODUCES_AND_CONSUMES);
     }
 
     private ApiInfo apiInfo() {
@@ -40,6 +38,7 @@ public class SwaggerConfig {
                 .title("Restful-Web-Service")
                 .description("Restful-Web-Service API")
                 .version("1.0.0")
+                .termsOfServiceUrl("tos")
                 .build();
     }
 }
