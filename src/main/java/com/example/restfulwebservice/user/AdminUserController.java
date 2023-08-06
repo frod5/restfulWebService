@@ -24,8 +24,17 @@ public class AdminUserController {
     private final UserRepository userRepository;
 
     @GetMapping("/users")
-    public List<User> retrieveAllUsers() {
-        return userRepository.findAll();
+    public MappingJacksonValue retrieveAllUsers() {
+
+        List<User> users = userRepository.findAll();
+
+        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept("id","name","joinDate","ssn");
+        FilterProvider filters = new SimpleFilterProvider().addFilter("UserInfo",filter);
+
+        MappingJacksonValue mapping = new MappingJacksonValue(users);
+        mapping.setFilters(filters);
+
+        return mapping;
     }
 
     @GetMapping("/users/{id}")
