@@ -38,7 +38,10 @@ public class AdminUserController {
         return mapping;
     }
 
-    @GetMapping("/v1/users/{id}")
+//    @GetMapping("/v1/users/{id}")
+//    @GetMapping(value = "/users/{id}/", params = "version=1") 파라미터로 관리
+//    @GetMapping(value = "/users/{id}", headers = "X-API-VERSION=1") // Header로 관리
+    @GetMapping(value = "/users/{id}", produces = "application/vnd.company.appv1+json") // MINETYPE (accept 헤더)
     public MappingJacksonValue retrieveUserV1(@PathVariable Long id) {
         User user = userRepository.findOne(id);
 
@@ -55,7 +58,10 @@ public class AdminUserController {
         return mapping;
     }
 
-    @GetMapping("/v2/users/{id}")
+//    @GetMapping("/v2/users/{id}")
+//@GetMapping(value = "/users/{id}/", params = "version=2") 파라미터로 관리
+//@GetMapping(value = "/users/{id}", headers = "X-API-VERSION=2")  // Header로 관리
+@GetMapping(value = "/users/{id}", produces = "application/vnd.company.appv2+json") // MINETYPE (accept 헤더)
     public MappingJacksonValue retrieveUserV2(@PathVariable Long id) {
         User user = userRepository.findOne(id);
 
