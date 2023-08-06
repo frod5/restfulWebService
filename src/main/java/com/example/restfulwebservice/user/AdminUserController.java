@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import lombok.RequiredArgsConstructor;
 import net.bytebuddy.build.Plugin;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.util.ObjectUtils;
@@ -37,8 +38,8 @@ public class AdminUserController {
         return mapping;
     }
 
-    @GetMapping("/users/{id}")
-    public MappingJacksonValue retrieveUser(@PathVariable Long id) {
+    @GetMapping("/v1/users/{id}")
+    public MappingJacksonValue retrieveUserV1(@PathVariable Long id) {
         User user = userRepository.findOne(id);
 
         if(ObjectUtils.isEmpty(user)) {
@@ -49,6 +50,27 @@ public class AdminUserController {
         FilterProvider filters = new SimpleFilterProvider().addFilter("UserInfo",filter);
 
         MappingJacksonValue mapping = new MappingJacksonValue(user);
+        mapping.setFilters(filters);
+
+        return mapping;
+    }
+
+    @GetMapping("/v2/users/{id}")
+    public MappingJacksonValue retrieveUserV2(@PathVariable Long id) {
+        User user = userRepository.findOne(id);
+
+        if(ObjectUtils.isEmpty(user)) {
+            throw new UserNotFoundException(String.format("ID[%s] not found",id));
+        }
+
+        UserV2 userV2 = new UserV2();
+        BeanUtils.copyProperties(user,userV2);  //UserV2에 user값을 copy
+        userV2.setGrade("VIP");
+
+        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept("id","name","joinDate","grade");
+        FilterProvider filters = new SimpleFilterProvider().addFilter("UserInfoV2",filter);
+
+        MappingJacksonValue mapping = new MappingJacksonValue(userV2);
         mapping.setFilters(filters);
 
         return mapping;
