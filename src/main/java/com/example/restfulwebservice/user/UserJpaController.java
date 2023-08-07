@@ -21,6 +21,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class UserJpaController {
 
     private final UserJpaRepository userJpaRepository;
+    private final PostJpaRepository postJpaRepository;
 
     @GetMapping("/users")
     public List<User> retrieveAllUsers() {
@@ -58,5 +59,22 @@ public class UserJpaController {
         User user = userJpaRepository.findById(id).orElseThrow(() -> new UserNotFoundException(String.format("ID[%s] not found", id)));
 
         return user.getPosts();
+    }
+
+    @PostMapping("/users/{id}/posts")
+    public ResponseEntity<Post> createPost(@PathVariable Long id, @RequestBody Post post) {
+
+        User user = userJpaRepository.findById(id).orElseThrow(() -> new UserNotFoundException(String.format("ID[%s] not found", id)));
+
+        post.setUser(user);
+
+        postJpaRepository.save(post);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("{id}")
+                .buildAndExpand(id)
+                .toUri();
+
+        return ResponseEntity.created(location).build();
     }
 }
