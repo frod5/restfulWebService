@@ -21,9 +21,4 @@ public class Post {
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
-
-    public void createPost(String description, User user) {
-        this.description = description;
-        this.user = user;
-    }
 }
