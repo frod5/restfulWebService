@@ -14,9 +14,9 @@ public class UserRepositoryImpl implements UserRepository {
     private static List<User> users = new ArrayList<>();
 
     static {
-        users.add(new User(1L,"Kenneth", LocalDateTime.now(),"pass1", "701010-1111111"));
-        users.add(new User(2L,"Alice", LocalDateTime.now(), "pass2", "701010-2222222"));
-        users.add(new User(3L,"Elena", LocalDateTime.now(), "pass3", "701010-1111111"));
+        users.add(new User(1L,"Kenneth", LocalDateTime.now(),"pass1", "701010-1111111",null));
+        users.add(new User(2L,"Alice", LocalDateTime.now(), "pass2", "701010-2222222",null));
+        users.add(new User(3L,"Elena", LocalDateTime.now(), "pass3", "701010-1111111",null));
     }
 
     private static long usersCount = 3;

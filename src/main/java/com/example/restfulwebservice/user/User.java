@@ -6,19 +6,20 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Getter
+@Setter
 //@JsonIgnoreProperties(value = {"password", "ssn"})
 //@JsonFilter("UserInfo")
 @Table(name = "USERS")
@@ -45,4 +46,7 @@ public class User {
 //    @JsonIgnore
     @ApiModelProperty(notes = "사용자 주민번호를 임력해주세요")
     private String ssn;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<Post> posts = new ArrayList<>();
 }
