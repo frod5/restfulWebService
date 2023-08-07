@@ -11,6 +11,10 @@ spring:
       matching-strategy: ant_path_matcher
   messages:
     basename: messages
+  security:
+    user:
+      name: username
+      password: passw0rd
 
 management:
   endpoints:
